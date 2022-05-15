@@ -49,15 +49,16 @@ function createBettor($tc_no, $email, $username, $phone, $dob, $password, $conne
 	return true;
 }
 
-function createEditor($tc_no, $email, $username, $phone, $dob, $password){
+function createEditor($tc_no, $email, $username, $phone, $dob, $password, $connection){
 
     // inserting the user into user table
-	//$queryUser = "insert into user values(\"" . $tc_no . "\", \"" . $password . "\", \"" . $username" . "\", \"" . $email . "\", \"" . $phone . "\", \"" . $dob . "\")";
-	$queryUser = ("INSERT INTO User (TC_id, password, username, email, phone, date_of_birth) VALUES(" .$tc_no .", " .$password .", " .$username .", "  .$email .", " .$phone .", " .$dob .")");
+	$queryUser = ("INSERT INTO User (TC_id, password, username, email, phone, date_of_birth) VALUES('$tc_no', '$password', '$username', '$email', '$phone', '$dob')");
     $resultUser = mysqli_query($connection, $queryUser);
 
-    // inserting the user into bettor table
-    $queryEditor = "insert into editor values(\"" . $tc_no . "\")";
+    // inserting the user into editor table
+    $queryEditor = ("INSERT INTO GeneralUser (TC_id) values('$tc_no')");
+	$resultEditor = mysqli_query($connection, $queryEditor);
+    $queryEditor = ("INSERT INTO Editor (TC_id) values('$tc_no')");
 	$resultEditor = mysqli_query($connection, $queryEditor);
 
 	if(!$resultUser || !$resultEditor){ // is the user info inserted into the database?
@@ -78,22 +79,20 @@ function createEditor($tc_no, $email, $username, $phone, $dob, $password){
     $_SESSION['dob'] = $user_data['date_of_birth'];
     $_SESSION['logged'] = true;
 
-	echo "<script language='JavaScript'> window.alert('Succesfully created account!');
-            window.location.replace('Main'); 
-        </script>"; // change redirection according to what your teammates name the main page!!!
+	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
+    //header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
 
-function createAdmin($tc_no, $email, $username, $phone, $dob, $password){
+function createAdmin($tc_no, $email, $username, $phone, $dob, $password, $connection){
 
     // inserting the user into user table
-	//$queryUser = "insert into user values(\"" . $tc_no . "\", \"" . $password . "\", \"" . $username" . "\", \"" . $email . "\", \"" . $phone . "\", \"" . $dob . "\")";
-	$queryUser = ("INSERT INTO User (TC_id, password, username, email, phone, date_of_birth) VALUES(" .$tc_no .", " .$password .", " .$username .", "  .$email .", " .$phone .", " .$dob .")");
+	$queryUser = ("INSERT INTO User (TC_id, password, username, email, phone, date_of_birth) VALUES('$tc_no', '$password', '$username', '$email', '$phone', '$dob')");
     $resultUser = mysqli_query($connection, $queryUser);
 
-    // inserting the user into bettor table
-    $queryAdmin = "insert into admin values(\"" . $tc_no . "\")";
-	$resultAdmin = mysqli_query($connection, $queryEditor);
+    // inserting the user into admin table
+    $queryAdmin = ("INSERT INTO Admin (TC_id) values('$tc_no')");
+	$resultAdmin = mysqli_query($connection, $queryAdmin);
 
 	if(!$resultUser || !$resultAdmin){ // is the user info inserted into the database?
 		echo "Failed to create account.";
@@ -113,9 +112,8 @@ function createAdmin($tc_no, $email, $username, $phone, $dob, $password){
     $_SESSION['dob'] = $user_data['date_of_birth'];
     $_SESSION['logged'] = true;
 
-	echo "<script language='JavaScript'> window.alert('Succesfully created account!');
-            window.location.replace('Main'); 
-        </script>"; // change redirection according to what your teammates name the main page!!!
+	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
+    //header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
 ?>
