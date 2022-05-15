@@ -534,4 +534,38 @@
             FOREIGN KEY (match_id, bet_type) REFERENCES Bet (match_id, bet_type))";
         $table = mysqli_query($connection, $query);
     }
+
+    // EXAMPLE DATA
+    $query = "SELECT * FROM Team";
+    $res = mysqli_query($connection, $query);
+    if(mysqli_num_rows($res) == 0){
+        $query = "INSERT INTO Team(team_id, team_name, win_rate) VALUES(1,'Team A', 0.5)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Team(team_id, team_name, win_rate) VALUES(2,'Team B', 0.45)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Team(team_id, team_name, win_rate) VALUES(3,'Team C', 0.9)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Team(team_id, team_name, win_rate) VALUES(4,'Team D', 0.1)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Team(team_id, team_name, win_rate) VALUES(5,'Team E', 0.6)";
+        $res1 = mysqli_query($connection, $query);
+    }
+
+    $query = "SELECT * FROM Game";
+    $res = mysqli_query($connection, $query);
+    if(mysqli_num_rows($res) == 0){
+        $query = "INSERT INTO Game(match_id, match_type, match_date, match_result) VALUES(1,'Football', '2022-06-12 18:00:00', NULL)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Game(match_id, match_type, match_date, match_result) VALUES(2,'Basketball', '2022-04-12 18:00:00', '1-0')";
+        $res1 = mysqli_query($connection, $query);
+    }
+
+    $query = "SELECT * FROM TeamsPlaying";
+    $res = mysqli_query($connection, $query);
+    if(mysqli_num_rows($res) == 0){
+        $query = "INSERT INTO TeamsPlaying(host_id, guest_id, match_id) VALUES(1, 2, 1)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO TeamsPlaying(host_id, guest_id, match_id) VALUES(3, 4, 2)";
+        $res1 = mysqli_query($connection, $query);
+    }
 ?>
