@@ -1,5 +1,4 @@
 <?php
-
 include("config.php");
 
 function checkLog(){
@@ -14,14 +13,17 @@ function logout(){
 	$_SESSION['logged'] = false;
 }
 
-function createBettor($tc_no, $email, $username, $phone, $dob, $password){
+function createBettor($tc_no, $email, $username, $phone, $dob, $password, $connection){
 
     // inserting the user into user table
-	$queryUser = ("INSERT INTO User (TC_id, password, username, email, phone, date_of_birth) VALUES(" .$tc_no .", " .$password .", " .$username .", "  .$email .", " .$phone .", " .$dob .")");
+    // ('$username', '" . md5($password) . "', '$email', '$create_datetime')"
+	$queryUser = ("INSERT INTO User (TC_id, password, username, email, phone, date_of_birth) VALUES('$tc_no', '$password', '$username', '$email', '$phone', '$dob')");
     $resultUser = mysqli_query($connection, $queryUser);
 
     // inserting the user into bettor table
-    $queryBettor = ("INSERT INTO Bettor (TC_id) values(" . $tc_no . ")");
+    $queryBettor = ("INSERT INTO GeneralUser (TC_id) values('$tc_no')");
+	$resultBettor = mysqli_query($connection, $queryBettor);
+    $queryBettor = ("INSERT INTO Bettor (TC_id) values('$tc_no')");
 	$resultBettor = mysqli_query($connection, $queryBettor);
 
 	if(!$resultUser || !$resultBettor){ // is the user info inserted into the database?

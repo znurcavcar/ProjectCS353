@@ -18,11 +18,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $password_confirm = $_POST['password_confirm'];
 
     //$result = mysqli_query($connection, "select * from user where TC_id = '$tc_no' or email = '$email' or username = '$user_name' or phone = '$phone'");
-    $result = mysqli_query($connection, "select * from user where (TC_id = " .$tc_no. " or email = " .$email." or username = " .$user_name." or phone = " .$phone. ")");
+    $result = mysqli_query($connection, "select * from user where (TC_id = '" .$tc_no. "' or email = '" .$email."' or username = '" .$user_name."' or phone = '" .$phone. "')");
 	
-    if(is_null($result)){ // if there exists no users with the given TC no, email, username and phone number
+    if(mysqli_num_rows($result) == 0){ // if there exists no users with the given TC no, email, username and phone number
         if($password == $password_confirm){
-            createBettor($tc_no, $email, $user_name, $phone, $dob, $password);
+            createBettor($tc_no, $email, $user_name, $phone, $dob, $password, $connection);
         }
         else{
             echo "<script type='text/javascript'>alert('Your passwords do not match.');</script>";
@@ -106,7 +106,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 				<label for="tc_no">TC No: </label>
 				<input type="number" name="tc_no"/> <br/>
 				<label for="email">E-mail: </label>
-				<input type="email" name="email"/> <br/>
+				<input type="text" name="email"/> <br/>
 				<label for="phone">Phone No: </label>
 				<input type="tel" name="phone"/> <br/>
 				<label for="dob">Date of Birth: </label>
