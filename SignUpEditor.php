@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -10,18 +9,19 @@ $password = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $tc_no = $_POST['tc_no'];
-    $email = $password['email'];
+    $email = $_POST['email'];
 	$user_name = $_POST['username'];
     $phone = $_POST['phone'];
     $dob = $_POST['dob'];
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
-    $result = mysqli_query($con, "select * from user where TC_id = '$tc_no' or email = '$email' or username = '$user_name' or phone = '$phone'");
-    
-    if(is_null($result)){ // if there exists no users with the given TC no, email, username and phone number
+    //$result = mysqli_query($connection, "select * from user where TC_id = '$tc_no' or email = '$email' or username = '$user_name' or phone = '$phone'");
+    $result = mysqli_query($connection, "select * from user where (TC_id = '" .$tc_no. "' or email = '" .$email."' or username = '" .$user_name."' or phone = '" .$phone. "')");
+	
+    if(mysqli_num_rows($result) == 0){ // if there exists no users with the given TC no, email, username and phone number
         if($password == $password_confirm){
-            createEditor($tc_no, $email, $user_name, $phone, $dob, $password);
+            createEditor($tc_no, $email, $user_name, $phone, $dob, $password, $connection);
         }
         else{
             echo "<script type='text/javascript'>alert('Your passwords do not match.');</script>";
@@ -93,43 +93,45 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 			background-color: #0055c0;
 			color: white;
 		}
-
-		.body{
-			background-image: url("./images/loginbackground.jpg");
-			background-size: cover;
-		}
 		</style>
     </head>
 
     <body>
-		<div class="LOGG">
-        	<h2>Login</h2>
-        	<form action="login.php" method="POST" name="LOGIN" onsubmit="return valid()">
+		<div class="SIGNUP">
+        	<h2>Sign Up</h2>
+        	<form action="SignUpEditor.php" method="POST" name="SIGNUP" onsubmit="return valid()">
             	<label for="username">Username: </label>
 	   			<input type="text" name="username" /> <br/>
-            	Password: <input type="password" name="password"/> <br/>
-            	<input class="button button1" type="submit" value="Login"/> <br/>
+				<label for="tc_no">TC No: </label>
+				<input type="number" name="tc_no"/> <br/>
+				<label for="email">E-mail: </label>
+				<input type="text" name="email"/> <br/>
+				<label for="phone">Phone No: </label>
+				<input type="tel" name="phone"/> <br/>
+				<label for="dob">Date of Birth: </label>
+				<input type="date" name="dob"/> <br/>
+				<label for="password">Password: </label>
+				<input type="password" name="password"/> <br/>
+				<label for="password_confirm">Password Confirmation: </label>
+				<input type="password" name="password_confirm"/> <br/>
+            	<input class="button button1" type="submit" value="SignUp"/> <br/>
 			</form>
 		</div>
     </body>
 </html>
 
 <script type="text/javascript">
-import React from 'react';
-import loginbackground from "./images/loginbackground.jpg";
 function valid() {
-	var a = document.forms["LOGIN"]["username"].value;
-	var b = document.forms["LOGIN"]["password"].value;
-	if (a == null || a == "", b == null || b == "") {
-		alert("Username and/or password cannot be blank.");
+	var a = document.forms["SIGNUP"]["username"].value;
+	var b = document.forms["SIGNUP"]["tc_no"].value;
+	var c = document.forms["SIGNUP"]["email"].value;
+	var d = document.forms["SIGNUP"]["phone"].value;
+	var e = document.forms["SIGNUP"]["dob"].value;
+	var f = document.forms["SIGNUP"]["password"].value;
+	var g = document.forms["SIGNUP"]["password_confirm"].value;
+	if (a == null || a == "", b == null || b == "", c == null || c == "", d == null || d == "", e == null || e == "", f == null || f == "", g == null || g == "") {
+		alert("Required areas cannot be blank.");
 		return false;
 	}
 }
-
-function bg() {
-	// Import result is the URL of your image
-	return <img src={loginbackground} alt="loginbackground" />;
-}
-
-export default bg;
 </script>
