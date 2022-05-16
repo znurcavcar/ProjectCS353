@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -7,6 +6,11 @@ include("functions.php");
 
 $user_name = "root";
 $password = "";
+
+if(checkLog()){
+	header("Location: Wallet.php");
+	die;
+}
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $tc_no = $_POST['tc_no'];
@@ -23,6 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if(mysqli_num_rows($result) == 0){ // if there exists no users with the given TC no, email, username and phone number
         if($password == $password_confirm){
             createBettor($tc_no, $email, $user_name, $phone, $dob, $password, $connection);
+			createWallet($tc_no, $connection);
         }
         else{
             echo "<script type='text/javascript'>alert('Your passwords do not match.');</script>";
