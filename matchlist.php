@@ -55,11 +55,19 @@ https://templatemo.com/tm-541-host-cloud
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html">My Wallet</a>
+                <a class="nav-link" href="betslips.php">My Betslips</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="wallet.php">My Wallet</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="services.html">Matches</a>
+                <a class="nav-link" href="matchlist.php">Matches</a>
               </li>
+            </ul>
+          </div>
+          <div class="functional-buttons">
+            <ul>
+              <li><a href="#">Sign Out</a></li>
             </ul>
           </div>
         </div>
@@ -72,8 +80,6 @@ https://templatemo.com/tm-541-host-cloud
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1>Our Services</h1>
-            <p><a href="index.html">Home</a> / <span>Our Services</span></p>
           </div>
         </div>
       </div>
@@ -81,7 +87,7 @@ https://templatemo.com/tm-541-host-cloud
     <!-- Heading Ends Here -->
 
 
-    <!-- Services Starts Here -->
+    <!-- Matches Starts Here -->
     <div class="services-section services-page">
       <div class="container">
         <div class="row">
@@ -107,17 +113,33 @@ https://templatemo.com/tm-541-host-cloud
                 $teamtuple = mysqli_fetch_array($teams);
 
                 echo("<div class='col-md-4 col-sm-6 col-xs-12'>
-                        <div class='match'>");
-                echo("<h5>".$teamtuple['host']." - ".$teamtuple['guest']."</h5>");
+                        <div class='service-item'>");
+                echo("<h4>".$teamtuple['host']." - ".$teamtuple['guest']."</h4>");
                 echo("<h5>".$tuple['match_type']."</h5>");
-                echo("<p>".$tuple['match_date']."</p");
+                echo("<p>".$tuple['match_date']."</p>");
                 echo("</div></div>");
             }
           ?>
         </div>
       </div>
     </div>
-    <!-- Services Ends Here --> 
+    <!-- Matches Ends Here --> 
+
+    <!-- Footer Starts Here -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          
+          <div class="col-md-12">
+            <div class="sub-footer">
+              <p>Copyright &copy; 2020 Cloud Hosting Company
+				- Designed by <a rel="nofollow" href="https://templatemo.com">TemplateMo</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer Ends Here -->
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
