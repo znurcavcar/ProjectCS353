@@ -13,7 +13,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
 	if(!empty($user_name) && !empty($password)){
-		$result = mysqli_query($connection, "select * from user where username = '$user_name'");
+		$result = mysqli_query($connection, "select * from user where username = '" .$user_name. "'");
 		if($result && mysqli_num_rows($result) > 0)
 		{
 			$user_data = mysqli_fetch_assoc($result);
@@ -110,11 +110,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <body>
 		<div class="SIGNIN">
         	<h2>Login</h2>
-        	<form action="Wallet.php" method="POST" name="SIGNIN" onsubmit="return valid()">
+        	<form action="SignIn.php" method="POST" name="SIGNIN" onsubmit="return valid()">
             	<label for="username">Username: </label>
 	   			<input type="text" name="username" /> <br/>
             	Password: <input type="password" name="password"/> <br/>
-            	<input class="button button1" type="submit" value="signin"/> <br/>
+            	<input class="button button1" type="submit" value="Sign In"/> <br/>
 			</form>
 		</div>
     </body>
