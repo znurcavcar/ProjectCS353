@@ -7,6 +7,11 @@ include("functions.php");
 $user_name = "root";
 $password = "";
 
+if(checkLog()){
+	header("Location: Wallet.php");
+	die;
+}
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $tc_no = $_POST['tc_no'];
     $email = $_POST['email'];
