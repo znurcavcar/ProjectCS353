@@ -45,7 +45,7 @@ function createBettor($tc_no, $email, $username, $phone, $dob, $password, $conne
     $_SESSION['logged'] = true;
 
 	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
-    //header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
+    header("Location: config.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
 
