@@ -37,7 +37,7 @@ else{
     <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 
-    <title>Betman - Welcome Page</title>
+    <title>Betman - Welcome!</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -140,7 +140,7 @@ https://templatemo.com/tm-541-host-cloud
 					  <div class="functional-buttons">
 						<br>
             			<ul>
-              				<li><a href="SignIn.php">Sign Up as Bettor</a></li>
+              				<li><a href="SignUpBettor.php">Sign Up as Bettor</a></li>
             			</ul>
          			  </div>
                     </article>
@@ -150,7 +150,7 @@ https://templatemo.com/tm-541-host-cloud
 					  <div class="functional-buttons">
 					    <br>
             			<ul>
-              				<li><a href="SignIn.php">Sign Up as Editor</a></li>
+              				<li><a href="SignUpEditor.php">Sign Up as Editor</a></li>
             			</ul>
          			  </div>
 					</article>
@@ -160,7 +160,7 @@ https://templatemo.com/tm-541-host-cloud
 					  <div class="functional-buttons">
 					  	<br>
             			<ul>
-              				<li><a href="SignIn.php">Sign Up as Admin</a></li>
+              				<li><a href="SignUpAdmin.php">Sign Up as Admin</a></li>
             			</ul>
          			  </div>
 					</article>
