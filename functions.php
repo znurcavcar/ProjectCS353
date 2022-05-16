@@ -82,7 +82,7 @@ function createBettor($tc_no, $email, $username, $phone, $dob, $password, $conne
     $_SESSION['dob'] = $user_data['date_of_birth'];
     $_SESSION['logged'] = true;
 
-	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
+	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>";
     header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
