@@ -9,8 +9,6 @@
     <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 
-    <title>Host Cloud Template - Services</title>
-
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -84,49 +82,92 @@ https://templatemo.com/tm-541-host-cloud
         </div>
       </div>
     </div>
-    <!-- Heading Ends Here -->
 
-
-    <!-- Matches Starts Here -->
-    <div class="services-section services-page">
+    <!-- Testimonials Starts Here -->
+    <div class="testimonials-section">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
             <div class="section-heading">
-              <h2>Past and Upcoming Matches</h2>
+              <span>Match Details</span>
+              <?php
+            session_start();
+            if($_SESSION['logged'] == true){
+                $matchid = $_POST['match'];
+
+                include "config.php";
+                $con = $connection;
+
+                $query = "SELECT match_id, match_type, match_date, match_result FROM Game WHERE match_id ='".$matchid."'";
+                $list = mysqli_query($con, $query);
+                while($tuple = mysqli_fetch_array($list)) {
+                    $tmp = $tuple['match_id'];
+                    $query2 = "SELECT Host.team_name AS host, Guest.team_name AS guest 
+                    FROM TeamsPlaying, Team AS Host, Team AS Guest
+                    WHERE match_id = '" .$tmp ."' AND host_id = Host.team_id AND guest_id = Guest.team_id";
+                    $teams = mysqli_query($con, $query2);
+                    $teamtuple = mysqli_fetch_array($teams);
+                    echo("<h2>".$teamtuple['host']." - ".$teamtuple['guest']."</h2>");
+                    echo("<h3>".$tuple['match_date']."</h3>");
+                    if($tuple['match_result'] != NULL)
+                        echo("<h3>".$tuple['match_result']."</h3>");
+                    else
+                        echo("<h3>TBA</h3>");
+
+                    echo("</div> </div></div> </div></div>");
+
+                    echo("<div class='services-section services-page'><div class='container'><div class='row'>");
+
+                    $query3 = "SELECT contents,TC_id FROM Comment NATURAL JOIN CommentOnMatch  WHERE match_id ='".$matchid."'";
+                    $commentlist = mysqli_query($con, $query3);
+                    while($comment = mysqli_fetch_array($commentlist)) {
+                        echo("<div class='col-md-4 col-sm-6 col-xs-12'><div class='service-item'>");
+                        echo("<h5>".$comment['contents']."</h5>");
+                        // find user name
+                        $tmp = $comment['TC_id'];
+                        $query4 = "SELECT username FROM User WHERE TC_id ='".$tmp."'";
+                        $namelist = mysqli_query($con, $query4);
+                        $name = mysqli_fetch_array($namelist);
+                        echo("<p>".$name['username']."</p>");
+                        echo("</div></div>");
+                    }
+                    // ENTER COMMENT
+                    echo("<div class='col-md-4 col-sm-6 col-xs-12'><div class='service-item'>");
+                    echo("<h5>Enter your comments</h5>");
+                    echo("<form action='matchdetails.php' method='post'><textarea name='comments' id='c1'></textarea><input type='submit' name='match' value='".$tuple['match_id']."' style='background-color:#00bcd4; border-color:#00bcd4;color: #00bcd4'></form>");
+                    echo("</div></div>");
+
+                    
+                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comments'])) {
+                        $comment = $_POST['comments'];
+                        $query5 = "SELECT contents FROM Comment WHERE contents = '".$comment."'";
+                        $res = mysqli_query($connection, $query5);
+                        if(mysqli_num_rows($res) == 0){
+                        // find unique id
+                            $id = 0; 
+                            $query5 = "SELECT comment_id FROM Comment WHERE comment_id = '".$id."'";
+                            $res = mysqli_query($connection, $query5);
+                            while(mysqli_num_rows($res) > 0){
+                                $id = $id + 1;
+                                $query5 = "SELECT comment_id FROM Comment WHERE comment_id = '".$id."'";
+                                $res = mysqli_query($connection, $query5); 
+                            }
+                            $date = date('d-m-y h:i:s');
+                            $query6 = "INSERT INTO Comment(comment_id, TC_id, comment_date, contents) VALUES('".$id ."', '".$_SESSION['TC_id']."', '".$date."', '".$comment."')";
+                            $res = mysqli_query($connection, $query6);
+                        
+                            $query6 = "INSERT INTO CommentOnMatch(comment_id, match_id) VALUES('".$id ."', '".$matchid."')";
+                            $res = mysqli_query($connection, $query6); 
+                        }
+                    }
+                }
+            }
+              ?>
             </div>
-          </div>
-          <?php
-          echo("<h3>".$_SESSION['match']."</h3>");
-          /*
-            include "config.php";
-            $con = $connection;
-
-            $query = "SELECT match_id, match_type, match_date FROM Game";
-            $complist = mysqli_query($connection, $query);
-
-            // find the teams of the match
-            while($tuple = mysqli_fetch_array($complist)) {
-                $tmp = $tuple['match_id'];
-                $query2 = "SELECT Host.team_name AS host, Guest.team_name AS guest 
-                            FROM TeamsPlaying, Team AS Host, Team AS Guest
-                            WHERE match_id = '" .$tmp ."' AND host_id = Host.team_id AND guest_id = Guest.team_id";
-                $teams = mysqli_query($connection, $query2);
-                $teamtuple = mysqli_fetch_array($teams);
-
-                echo("<div class='col-md-4 col-sm-6 col-xs-12'>
-                        <div class='service-item'>");
-                echo("<h4>".$teamtuple['host']." - ".$teamtuple['guest']."</h4>");
-                echo("<p>".$tuple['match_type']."</p>");
-                echo("<p>".$tuple['match_date']."</p>");
-                echo("<div class='functional-buttons'><ul><li><a href='#'>Details</a></li></ul></div>");
-                echo("</div></div>");
-            }*/
-          ?>
-        </div>
       </div>
     </div>
-    <!-- Matches Ends Here --> 
+           
+    <!-- Testimonials Ends Here -->
 
     <!-- Footer Starts Here -->
     <footer>
