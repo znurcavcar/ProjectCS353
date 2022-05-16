@@ -95,7 +95,6 @@ https://templatemo.com/tm-541-host-cloud
             <ul>
               <li><a href="SignOut.php">Sign Out</a></li>
             </ul>
-            </form>
           </div>
         </div>
       </nav>
