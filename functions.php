@@ -9,12 +9,50 @@ function checkLog(){
 		return false;
 }
 
+function isBettor($tc_no, $connection){
+    if(checkLog()){
+        $queryUser = "select * from bettor where (TC_id = '" .$tc_no. "')";
+        $result = mysqli_query($connection, $queryUser);
+        if(mysqli_num_rows($result) == 0)
+            return false;
+        else
+            return true;
+    }
+    else
+        return false;
+}
+
+function isEditor($tc_no, $connection){
+    if(checkLog()){
+        $queryUser = "select * from editor where (TC_id = '" .$tc_no. "')";
+        $result = mysqli_query($connection, $queryUser);
+        if(mysqli_num_rows($result) == 0)
+            return false;
+        else
+            return true;
+    }
+    else
+        return false;
+}
+
+function isAdmin($tc_no, $connection){
+    if(checkLog()){
+        $queryUser = "select * from admin where (TC_id = '" .$tc_no. "')";
+        $result = mysqli_query($connection, $queryUser);
+        if(mysqli_num_rows($result) == 0)
+            return false;
+        else
+            return true;
+    }
+    else
+        return false;
+}
+
 function logout(){
 	$_SESSION['logged'] = false;
 }
 
 function createBettor($tc_no, $email, $username, $phone, $dob, $password, $connection){
-
     // inserting the user into user table
     // ('$username', '" . md5($password) . "', '$email', '$create_datetime')"
 	$queryUser = ("INSERT INTO User (TC_id, password, username, email, phone, date_of_birth) VALUES('$tc_no', '$password', '$username', '$email', '$phone', '$dob')");
@@ -44,8 +82,8 @@ function createBettor($tc_no, $email, $username, $phone, $dob, $password, $conne
     $_SESSION['dob'] = $user_data['date_of_birth'];
     $_SESSION['logged'] = true;
 
-	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
-    header("Location: config.php");    // change redirection according to what your teammates name the main page!!!
+	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>";
+    header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
 
@@ -80,7 +118,7 @@ function createEditor($tc_no, $email, $username, $phone, $dob, $password, $conne
     $_SESSION['logged'] = true;
 
 	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
-    //header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
+    header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
 
@@ -113,7 +151,41 @@ function createAdmin($tc_no, $email, $username, $phone, $dob, $password, $connec
     $_SESSION['logged'] = true;
 
 	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
-    //header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
+    header("Location: Wallet.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
+}
+
+function createWallet($tc_no, $connection){
+
+    // inserting new wallet into the wallet table
+	$queryWallet = ("INSERT INTO Wallet (TC_id, wallet_id, real_currency, app_currency) VALUES('$tc_no', '$tc_no', 0, 10)");
+    $resultWallet = mysqli_query($connection, $queryWallet);
+	if(!$resultWallet){ // is the wallet info inserted into the database?
+		echo "Failed to create wallet.";
+		return false;
+		exit();
+	}
+	return true;
+}
+
+function changeOdd($type, $mid, $odd, $connection){
+	$query = "update Bet set ' . $odd . ' 
+				where bet_type = ' . $type . ' 
+				and match_id = ' . $mid . '";
+	$res = mysqli_query($connection, $query);
+	if(!$res){
+		echo "Failed to change the odd";
+		exit();
+	}
+}
+
+function cancelBet($type, $mid, $uid, $date, $connection){
+	$query = "insert into BetRemovedByAdmin values(' . $uid . ',
+				' . $mid . ', ' . $date . ', ' . $date . ')";
+	$res = mysqli_query($connection, $query);
+	if(!$res){
+		echo "Failed to cancel the bet";
+		exit();
+	}
 }
 ?>
