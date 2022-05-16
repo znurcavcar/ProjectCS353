@@ -97,6 +97,8 @@ https://templatemo.com/tm-541-host-cloud
             </div>
           </div>
           <?php
+          echo("<h3>".$_SESSION['match']."</h3>");
+          /*
             include "config.php";
             $con = $connection;
 
@@ -117,10 +119,9 @@ https://templatemo.com/tm-541-host-cloud
                 echo("<h4>".$teamtuple['host']." - ".$teamtuple['guest']."</h4>");
                 echo("<p>".$tuple['match_type']."</p>");
                 echo("<p>".$tuple['match_date']."</p>");
-                $_SESSION['match'] = $tuple['match_id'];
-                echo("<div class='functional-buttons'><ul><li><a href='matchdetails.php'>Details</a></li></ul></div>");
+                echo("<div class='functional-buttons'><ul><li><a href='#'>Details</a></li></ul></div>");
                 echo("</div></div>");
-            }
+            }*/
           ?>
         </div>
       </div>
