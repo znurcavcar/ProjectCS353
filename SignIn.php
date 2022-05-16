@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 				$_SESSION['phone']= $user_data['phone'];
 				$_SESSION['date_of_birth']= $user_data['date_of_birth'];
 				$_SESSION['logged'] = true;
-				header("Location: Wallet.php");
+				header("Location: matchlist.php");
 				die;
 			}
 			else{

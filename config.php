@@ -577,4 +577,3 @@
         $query = "INSERT INTO Bet(match_id, bet_type, bet_name, MBN, odds) VALUES(2, 'B', 'B1', 2, 0.37)";
         $res1 = mysqli_query($connection, $query);
     }
-?>
