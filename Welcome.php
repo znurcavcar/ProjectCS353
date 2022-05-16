@@ -4,40 +4,25 @@ session_start();
 include("config.php");
 include("functions.php");
 
-$user_name = "root";
-$password = "";
-
-
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-	$user_name = $_POST['username'];
-    $password = $_POST['password'];
-
-	if(!empty($user_name) && !empty($password)){
-		$result = mysqli_query($connection, "select * from user where username = '" .$user_name. "'");
-		if($result && mysqli_num_rows($result) > 0)
-		{
-			$user_data = mysqli_fetch_assoc($result);
-			if($user_data['password'] === $password){ // password is correct
-				// getting student information to use on other pages
-				$_SESSION['username'] = $user_data['username'];
-				$_SESSION['TC_id'] = $user_data['TC_id'];
-				$_SESSION['email'] = $user_data['email'];
-				$_SESSION['phone']= $user_data['phone'];
-				$_SESSION['date_of_birth']= $user_data['date_of_birth'];
-				$_SESSION['logged'] = true;
-				header("Location: Wallet.php");
-				die;
-			}
-			else{
-				echo "<script type='text/javascript'>alert('Invalid Username or Password.');</script>";
-				$_SESSION['logged'] = false;
-			}
-		}
-		else{
-			echo "<script type='text/javascript'>alert('Invalid Username or Password.');</script>";
-			$_SESSION['logged'] = false;
-		}
+if(!checkLog()){
+    if(isset($_POST['admin'])){
+		header("Location: SignUpAdmin.php");
+        die;
 	}
+	
+    if(isset($_POST['editor'])){
+		header("Location: SignUpEditor.php");
+        die;
+	}
+
+    if(isset($_POST['bettor'])){
+		header("Location: SignUpBettor.php");
+        die;
+	}
+}
+else{
+    header("Location: Wallet.php");
+	die;
 }
 ?>
 
@@ -52,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 
-    <title>Betman - Sign In</title>
+    <title>Betman - Welcome!</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -92,7 +77,7 @@ https://templatemo.com/tm-541-host-cloud
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="Welcome.php">Welcome</a>
               </li>
               <li class="nav-item">
@@ -102,7 +87,8 @@ https://templatemo.com/tm-541-host-cloud
           </div>
           <div class="functional-buttons">
             <ul>
-              <li><a href="SignUpBettor.php">Sign Up</a></li>
+              <li><a href="SignIn.php">Sign in</a></li>
+              <li><a href="#signup-section">Sign Up</a></li>
             </ul>
           </div>
         </div>
@@ -115,8 +101,8 @@ https://templatemo.com/tm-541-host-cloud
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1>Sign In</h1>
-            <p><span>Already have an account? You can sign in here.</span></p>
+            <h1>Welcome to Betman!</h1>
+            <p><span>~ Social Betting Platform ~</span></p>
           </div>
         </div>
       </div>
@@ -124,54 +110,71 @@ https://templatemo.com/tm-541-host-cloud
     <!-- Heading Ends Here -->
 
 
-    <!-- Contact Us Starts Here -->
-	<br>
-	<br>
-	<br>
-    <div class="SIGNIN">
+    <!-- About Us Starts Here -->
+    <div class="about-us">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
-            <div class="contact-form">
-              <form id="contact" action="" method="post">
-                <div class="row">
-                  <div class="col-md-12 col-sm-12">
-				  	<form action="SignIn.php" method="POST" name="SIGNIN" onsubmit="return valid()">
-                    <fieldset>
-                      <input name="username" type="text" id="username" placeholder="Your username" required="">
-                    </fieldset>
-					<fieldset>
-                      <input name="password" type="password" id="password" placeholder="Your password" required="">
-                    </fieldset>
-					</form>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <button type="submit" id="form-submit" class="main-button">Sign In</button>
-                    </fieldset>
-                  </div>
-                </div>
-              </form>
-          </div>
+            <div class="left-image">
+              <img src="assets/images/betman-logo-bigger.png" alt="">
+            </div>
           </div>
           <div class="col-md-6">
             <div class="right-content">
               <div class="section-heading">
-                <span>Sign In</span>
-                <h2>Forgot Something?</h2>
-                <p>If you cannot remember your username or your password, you can contact our team.</p>
+			  <section id="signup-section">
+                <span>Welcome!</span>
+                <h2>Want to Know More About Us?</h2>
+                <p>If you want to know more about Betman, you can always pay a visit to our "About Us" page. Now let us talk about the best part of Betman: our wonderful members!</p>
+              </div>
+              <div id='tabs'>
+                  <ul>
+                    <li><a href='#tabs-1'>Bettor</a></li>
+                    <li><a href='#tabs-2'>Editor</a></li>
+                    <li><a href='#tabs-3'>Admin</a></li>
+                  </ul>
+                  <section class='tabs-content'>
+                    <article id='tabs-1'>
+                      <p>Ut elementum a elit sed tristique. Pellentesque sed semper erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean quam erat, rutrum ut malesuada a, commodo vitae lectus. Integer volutpat sapien in arcu fringilla, ac eleifend est facilisis.
+                      <br><br>Phasellus finibus lacus eu scelerisque rutrum. Duis purus eros, blandit ultricies iaculis in, commodo quis lacus. Pellentesque interdum varius enim nec accumsan.</p>
+					  <div class="functional-buttons">
+						<br>
+            			<ul>
+              				<li><a href="SignUpBettor.php">Sign Up as Bettor</a></li>
+            			</ul>
+         			  </div>
+                    </article>
+                    <article id='tabs-2'>
+                      <p>Aenean molestie, odio quis viverra ultricies, leo tellus lacinia neque, sit amet maximus tortor nunc aliquet felis. Duis sit amet nibh non sapien tincidunt bibendum. Curabitur rutrum justo id leo ornare, suscipit lobortis augue volutpat.
+                      <br><br>Sed ligula arcu, interdum eu magna eget, tristique aliquet nibh. Aenean sodales justo vitae ex pharetra, vitae tincidunt dolor condimentum. Cras vel mattis risus.</p>
+					  <div class="functional-buttons">
+					    <br>
+            			<ul>
+              				<li><a href="SignUpEditor.php">Sign Up as Editor</a></li>
+            			</ul>
+         			  </div>
+					</article>
+                    <article id='tabs-3'>
+                      <p>Fusce in semper velit, at tempus augue. Morbi quis auctor ipsum, ut accumsan neque. Vivamus dapibus ipsum placerat ante commodo, eget suscipit tortor hendrerit. Quisque lacinia sed velit et maximus.
+                      <br><br>Quisque dictum, lacus a malesuada finibus, arcu magna luctus risus, eu accumsan risus elit vitae lacus. Vestibulum et lorem non erat efficitur iaculis ut nec nibh. Vestibulum mauris ipsum, tempor tincidunt justo sit amet, bibendum tincidunt dui.</p>
+					  <div class="functional-buttons">
+					  	<br>
+            			<ul>
+              				<li><a href="SignUpAdmin.php">Sign Up as Admin</a></li>
+            			</ul>
+         			  </div>
+					</article>
+                  </section>
+				</section>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Contact Us Ends Here -->
+    <!-- About Us Ends Here -->
 
     <!-- Footer Starts Here -->
-    <br>
-    <br>
-    <br>
     <footer>
       <div class="container">
         <div class="row">
@@ -195,7 +198,6 @@ https://templatemo.com/tm-541-host-cloud
     <script src="assets/js/owl.js"></script>
     <script src="assets/js/accordions.js"></script>
 
-
     <script language = "text/Javascript"> 
       cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
       function clearField(t){                   //declaring the array outside of the
@@ -205,15 +207,6 @@ https://templatemo.com/tm-541-host-cloud
           t.style.color='#fff';
           }
       }
-
-	  function valid() {
-	var a = document.forms["SIGNIN"]["username"].value;
-	var b = document.forms["SIGNIN"]["password"].value;
-	if (a == null || a == "", b == null || b == "") {
-		alert("Username and/or password cannot be blank.");
-		return false;
-	}
-}
     </script>
 
   </body>
