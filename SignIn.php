@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 				$_SESSION['phone']= $user_data['phone'];
 				$_SESSION['date_of_birth']= $user_data['date_of_birth'];
 				$_SESSION['logged'] = true;
-				header("Location: matchlist.php");
+				header("Location: Profile.php");
 				die;
 			}
 			else{
@@ -94,9 +94,6 @@ https://templatemo.com/tm-541-host-cloud
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
                 <a class="nav-link" href="Welcome.php">Welcome</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="AboutUs.php">About Us</a>
               </li>
             </ul>
           </div>

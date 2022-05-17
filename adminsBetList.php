@@ -1,31 +1,3 @@
-<?php
-session_start();
-
-include("config.php");
-include("functions.php");
-
-    if(!checkLog()){
-	    header("Location: SignIn.php");
-	    die;
-    }
-
-    $user_data['username'] = $_SESSION['username'];
-    $user_data['TC_id'] = $_SESSION['TC_id'];
-    $user_data['email'] = $_SESSION['email'];
-    $user_data['phone'] = $_SESSION['phone'];
-    $user_data['date_of_birth'] = $_SESSION['date_of_birth'];
-
-    if(!isEditor($user_data['TC_id'], $connection)){
-        header("Location: Wallet.php");
-        die;
-    }
-	
-	if(isset($_POST['create'])){
-		header("Location: Wallet.php");
-		die;
-	}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,7 +9,7 @@ include("functions.php");
     <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 
-    <title>Betman - Create Bet Slip</title>
+    <title>Host Cloud Template - Services</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -47,11 +19,8 @@ include("functions.php");
     <link rel="stylesheet" href="assets/css/templatemo-host-cloud.css">
     <link rel="stylesheet" href="assets/css/owl.css">
 <!--
-
 Host Cloud Template
-
 https://templatemo.com/tm-541-host-cloud
-
 -->
   </head>
 
@@ -71,7 +40,7 @@ https://templatemo.com/tm-541-host-cloud
     <header class="">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand" href="index.html"><h2>BETMAN</h2></a>
+          <a class="navbar-brand" href="index.html"><h2>Host <em>Cloud</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -80,20 +49,17 @@ https://templatemo.com/tm-541-host-cloud
             <li class="nav-item">
                 <a class="nav-link" href="Profile.php">Profile</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="betslips.php">Available Betslips</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="matchlist.php">Matches</a>
               </li>
               <?php
-              session_start();
-              include "config.php";
-              include "functions.php";
-              $con = $connection;
+
               if(isBettor($_SESSION['TC_id'],$con)){
                 echo("<li class='nav-item'><a class='nav-link' href='wallet.php'>My Wallet</a></li>");
-                echo("<li class='nav-item'><a class='nav-link' href='betlist.php'>Bets</a></li>");
+                echo("<li class='nav-item active'><a class='nav-link' href='betlist.php'>Bets</a></li>");
                 echo("<li class='nav-item'><a class='nav-link' href='mybetslips.php'>My Betslips</a></li>");
                 echo("<li class='nav-item'><a class='nav-link' href='lotteryTickets.php'>My Lottery Tickets</a></li>");
               }
@@ -105,7 +71,7 @@ https://templatemo.com/tm-541-host-cloud
           </div>
           <div class="functional-buttons">
             <ul>
-            <li><a href="SignOut.php">Sign Out</a></li>
+              <li><a href="SignOut.php">Sign Out</a></li>
             </ul>
           </div>
         </div>
@@ -113,89 +79,106 @@ https://templatemo.com/tm-541-host-cloud
     </header>
 
     <!-- Page Content -->
-    <!-- Heading Starts Here -->
+
+     <!-- Heading Starts Here -->
     <div class="page-heading header-text">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1>Create Bet Slip</h1>
-            <p><span>Share Your Predictions with Your Followers</span></p>
+            <h1>Ongoing Bets</h1>
           </div>
         </div>
       </div>
     </div>
     <!-- Heading Ends Here -->
 
-    <div class="contact-us">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-              <form id="contact" action="createbetslip.php" method="post">
-                <div class="row">
-                  <?php
-                  include "config.php";
-                  $con = $connection;
-                  $query = "SELECT * FROM Bet";
-                  $list = mysqli_query($con, $query);
-                  echo("<div class='col-lg-12'><h3>Available Bets\n</h3></div>");
-                  echo("<div>");
-                  
-                  while($tuple = mysqli_fetch_array($list)){
-                    $mid = $tuple['match_id']."-".$tuple['bet_type'];
-                    echo("<input type='checkbox' name='formMatch[]' value='".$mid."' checked/>".$tuple['match_id']." - ".$tuple['bet_type']."<br />");
-                  }
-                  echo("<input type='text' name='rate' placeholder = 'Rate'><br />");
-                  echo("</div>");
-                  ?>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <button type="submit" id="form-submit" class="main-button">Create Slip</button>
-                    </fieldset>
-                  </div>
-                </div>
-              </form>
-          
-          </div>
-          <div class="col-md-6">
-            <div class="right-content">
-              <div class="section-heading">
-                <span>Create Bet Slip</span>
-                <h2>Your Predictions</h2>
-                <p>Use your predictions while creating this bet slip in order to share your predictions with your followers. Your foresight might help others!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Footer Starts Here -->
-    <br>
-    <br>
-    <br>
-    <footer>
+    <!-- Services Starts Here -->
+    <div class="services-section">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <div class="sub-footer">
-              <p>Copyright &copy; 2020 Cloud Hosting Company
-				- Designed by <a rel="nofollow" href="https://templatemo.com">TemplateMo</a></p>
+            <div class="section-heading">
             </div>
           </div>
+          <?php
+
+          session_start();
+            include ("config.php");
+            include ("functions.php");
+            $user_name = "root";
+            $password = "";
+            $con = $connection;
+
+            // Find ongoing bets
+            $query1 = "select * from Bet, Game where bet.match_id = game.match_id and 
+                      match_date >= cast(now() as date)";
+
+            $bets = mysqli_query($con, $query1);
+            
+            if(mysqli_num_rows($bets) == 0){
+                echo "Could not find any bets in the database.";
+                //exit();
+            }
+            
+            while($bet = mysqli_fetch_array($bets)) { 
+                $tmp1 = $bet['match_id'];
+
+                // Find the match info
+                $query2 = "select * from Game where match_id = ' ". $tmp1." '";
+                $match = mysqli_query($con, $query2);
+                if(mysqli_num_rows($match) == 0){
+                  echo "Could not find any games in the database.";
+                  //exit();
+                }
+                else{
+                  $games = mysqli_fetch_array($match);
+
+                  if(!isCancelled($_SESSION['TC_id'], $games['match_id'], $bet['bet_type'], $con)){
+                    $query3 = "select hostTeam.team_name as host, guestTeam.team_name as guest from TeamsPlaying, Team as hostTeam, Team as guestTeam 
+                    where match_id = ' ". $tmp1 . "' and host_id = hostTeam.team_id and guest_id = guestTeam.team_id";
+            
+                        $teams = mysqli_query($con, $query3);
+                        $teamtuple = mysqli_fetch_array($teams);
+
+                        echo "<div class='col-md-4 col-sm-6 col-xs-12'>
+                                <div class='match'>";
+                        echo "<h5>".$teamtuple['host']." - ".$teamtuple['guest']."</h5>";
+                        echo "<h5>".$games['match_type']."</h5>";
+                        echo "<p>".$games['match_date']."</p";
+                        echo "<h5>".$bet['MBN']."</h5>";
+                        echo "<h5>".$bet['bet_type']."</h5>";
+                        echo "<h5>".$bet['odds']."</h5>";
+                        echo "<div class=\"CancelBet\">
+                            <form method=\"POST\" name=\"CancelBet\">
+                            <button type=\"submit\" class=\"btn btn-success\">Cancel</button>
+                            </form></div>";
+                        echo "</div></div>";
+
+                    if($_SERVER["REQUEST_METHOD"] == "POST") {
+                        cancelBet($bet['bet_type'], $bet['match_id'], $_SESSION['TC_id'], $con);
+                    }
+                  }
+
+                    
+              }
+                
+
+            }
+          ?>
         </div>
       </div>
-    </footer>
-    <!-- Footer Ends Here -->
+    </div>
+    <!-- Services Ends Here -->
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
+     <!-- Bootstrap core JavaScript -->
+     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Additional Scripts -->
     <script src="assets/js/custom.js"></script>
     <script src="assets/js/owl.js"></script>
     <script src="assets/js/accordions.js"></script>
-
 
     <script language = "text/Javascript"> 
       cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field

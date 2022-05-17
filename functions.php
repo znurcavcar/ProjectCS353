@@ -50,6 +50,7 @@ function isAdmin($tc_no, $connection){
 
 function logout(){
 	$_SESSION['logged'] = false;
+    session_destroy();
 }
 
 function createBettor($tc_no, $email, $username, $phone, $dob, $password, $connection){
@@ -187,5 +188,34 @@ function cancelBet($type, $mid, $uid, $date, $connection){
 		echo "Failed to cancel the bet";
 		exit();
 	}
+}
+
+function createLotteryTicket($TC_id, $lottery_id, $connection){
+	$win = random_int(0, 1000000);
+	$id = 1;
+	$last = "select ticket_id from LotteryTicket where ticket_id = '".$id."'";
+	$res = mysqli_query($connection, $last);
+
+	while(mysqli_num_rows($res) > 0){
+		$id = $id + 1;
+		$last = "select ticket_id from LotteryTicket where ticket_id = '".$id."'";
+		$res = mysqli_query($connection, $last);
+	}
+	$q1 = "INSERT INTO LotteryTicket(ticket_id, lottery_id, reward) VALUES('" . $id ."','" . $lottery_id ." ', '" . $win ." ') ";
+	
+	$res1 = mysqli_query($connection, $q1);
+	if(!$res1){
+		echo "<script language='JavaScript'> window.alert('Failed to create lottery ticket')";
+		//exit();
+	}
+	else{
+		$q2 = "INSERT INTO BettorBoughtTicket(ticket_id, lottery_id, bettor_id, ticket_purchase_date) VALUES('" . $id ." ', '" . $lottery_id ." ','" . $TC_id ." ', cast(now() as date))";
+		$res2 = mysqli_query($connection, $q2);
+		if(!$res2){
+			echo "Failed to create bettorboughtticket";
+			exit();
+		}
+	}
+	
 }
 ?>

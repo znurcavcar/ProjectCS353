@@ -48,24 +48,34 @@ https://templatemo.com/tm-541-host-cloud
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                <a class="nav-link" href="index.html">Home
-                  <span class="sr-only">(current)</span>
-                </a>
+                <a class="nav-link" href="Profile.php">Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="betslips.php">My Betslips</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="wallet.php">My Wallet</a>
+                <a class="nav-link" href="betslips.php">Available Betslips</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="matchlist.php">Matches</a>
               </li>
+              <?php
+              session_start();
+              include "config.php";
+              include "functions.php";
+              $con = $connection;
+              if(isBettor($_SESSION['TC_id'],$con)){
+                echo("<li class='nav-item'><a class='nav-link' href='wallet.php'>My Wallet</a></li>");
+                echo("<li class='nav-item'><a class='nav-link' href='betlist.php'>Bets</a></li>");
+                echo("<li class='nav-item'><a class='nav-link' href='mybetslips.php'>My Betslips</a></li>");
+                echo("<li class='nav-item'><a class='nav-link' href='lotteryTickets.php'>My Lottery Tickets</a></li>");
+              }
+              if(isAdmin($_SESSION['TC_id'],$con)){
+                echo("<li class='nav-item'><a class='nav-link' href='adminsBetList.php'>Bets</a></li>");
+              }
+              ?>
             </ul>
           </div>
           <div class="functional-buttons">
             <ul>
-              <li><a href="#">Sign Out</a></li>
+              <li><a href="SignOut.php">Sign Out</a></li>
             </ul>
           </div>
         </div>
@@ -91,12 +101,8 @@ https://templatemo.com/tm-541-host-cloud
             <div class="section-heading">
               <span>Match Details</span>
               <?php
-            session_start();
             if($_SESSION['logged'] == true){
                 $matchid = $_POST['match'];
-
-                include "config.php";
-                $con = $connection;
 
                 $query = "SELECT match_id, match_type, match_date, match_result FROM Game WHERE match_id ='".$matchid."'";
                 $list = mysqli_query($con, $query);

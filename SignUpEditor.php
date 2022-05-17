@@ -8,7 +8,7 @@ $user_name = "root";
 $password = "";
 
 if(checkLog()){
-	header("Location: Wallet.php");
+	header("Location: matchlist.php");
 	die;
 }
 
