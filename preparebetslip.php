@@ -93,7 +93,6 @@ https://templatemo.com/tm-541-host-cloud
               $con = $connection;
               if(isBettor($_SESSION['TC_id'],$con)){
                 echo("<li class='nav-item'><a class='nav-link' href='wallet.php'>My Wallet</a></li>");
-                echo("<li class='nav-item'><a class='nav-link' href='betlist.php'>Bets</a></li>");
                 echo("<li class='nav-item'><a class='nav-link' href='mybetslips.php'>My Betslips</a></li>");
                 echo("<li class='nav-item'><a class='nav-link' href='lotteryTickets.php'>My Lottery Tickets</a></li>");
               }

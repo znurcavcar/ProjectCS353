@@ -49,24 +49,15 @@ https://templatemo.com/tm-541-host-cloud
             <li class="nav-item">
                 <a class="nav-link" href="Profile.php">Profile</a>
               </li>
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="betslips.php">Available Betslips</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="matchlist.php">Matches</a>
               </li>
-              <?php
-
-              if(isBettor($_SESSION['TC_id'],$con)){
-                echo("<li class='nav-item'><a class='nav-link' href='wallet.php'>My Wallet</a></li>");
-                echo("<li class='nav-item active'><a class='nav-link' href='betlist.php'>Bets</a></li>");
-                echo("<li class='nav-item'><a class='nav-link' href='mybetslips.php'>My Betslips</a></li>");
-                echo("<li class='nav-item'><a class='nav-link' href='lotteryTickets.php'>My Lottery Tickets</a></li>");
-              }
-              if(isAdmin($_SESSION['TC_id'],$con)){
-                echo("<li class='nav-item'><a class='nav-link' href='adminsBetList.php'>Bets</a></li>");
-              }
-              ?>
+              <li class="nav-item avtive">
+                <a class="nav-link" href="adminsBetList.php">Bets</a>
+              </li>
             </ul>
           </div>
           <div class="functional-buttons">
@@ -102,13 +93,12 @@ https://templatemo.com/tm-541-host-cloud
             </div>
           </div>
           <?php
-
-          session_start();
-            include ("config.php");
-            include ("functions.php");
+            session_start();
+            include "config.php";
+            include "functions.php";
+            $con = $connection;
             $user_name = "root";
             $password = "";
-            $con = $connection;
 
             // Find ongoing bets
             $query1 = "select * from Bet, Game where bet.match_id = game.match_id and 

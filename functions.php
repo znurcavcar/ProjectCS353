@@ -84,7 +84,7 @@ function createBettor($tc_no, $email, $username, $phone, $dob, $password, $conne
     $_SESSION['logged'] = true;
 
 	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>";
-    	header("Location: Profile.php");    // change redirection according to what your teammates name the main page!!!
+    	header("Location: SignIn.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
 
@@ -119,7 +119,7 @@ function createEditor($tc_no, $email, $username, $phone, $dob, $password, $conne
     $_SESSION['logged'] = true;
 
 	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
-    	header("Location: Profile.php");    // change redirection according to what your teammates name the main page!!!
+    	header("Location: SignIn.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
 
@@ -152,7 +152,7 @@ function createAdmin($tc_no, $email, $username, $phone, $dob, $password, $connec
     $_SESSION['logged'] = true;
 
 	echo "<script language='JavaScript'> window.alert('Succesfully created account!')</script>"; 
-    	header("Location: Profile.php");    // change redirection according to what your teammates name the main page!!!
+    	header("Location: SignIn.php");    // change redirection according to what your teammates name the main page!!!
 	return true;
 }
 
