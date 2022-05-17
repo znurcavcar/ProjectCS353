@@ -113,6 +113,14 @@ https://templatemo.com/tm-541-host-cloud
           <?php
             $uid = $_SESSION['TC_id'];
 
+            echo("<p>Number of Betslips involving a certain match</p");
+            $query = "SELECT S.match_id AS s1, COUNT(B.slip_id) AS c FROM Betslip AS B, SlipHasBet AS S WHERE S.slip_id = B.slip_id GROUP BY S.match_id";
+            $complist = mysqli_query($connection, $query);
+            while($tuple = mysqli_fetch_array($complist)) {
+              echo("<p>".$tuple['s1']."</p>");
+              echo("<p>".$tuple['c']."</p>");
+            }
+
             $query = "SELECT * FROM Betslip";
             $complist = mysqli_query($connection, $query);
 

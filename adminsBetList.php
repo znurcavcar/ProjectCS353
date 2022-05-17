@@ -101,8 +101,7 @@ https://templatemo.com/tm-541-host-cloud
             $password = "";
 
             // Find ongoing bets
-            $query1 = "select * from Bet, Game where bet.match_id = game.match_id and 
-                      match_date >= cast(now() as date)";
+            $query1 = "select * from Bet, Game where bet.match_id = game.match_id";
 
             $bets = mysqli_query($con, $query1);
             

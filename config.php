@@ -271,7 +271,7 @@
         $query = "CREATE TABLE BettorOwnsSlip (
             bettor_id INT NOT NULL,
             slip_id INT NOT NULL,
-            PRIMARY KEY (slip_id),
+            PRIMARY KEY (slip_id,bettor_id),
             FOREIGN KEY (slip_id) REFERENCES BetSlip (slip_id),
             FOREIGN KEY (bettor_id) REFERENCES Bettor (TC_id))";
         $table = mysqli_query($connection, $query);
@@ -558,6 +558,7 @@
         $res1 = mysqli_query($connection, $query);
         $query = "INSERT INTO Game(match_id, match_type, match_date, match_result) VALUES(2,'Basketball', '2021-04-12 18:00:00', '1-0')";
         $res1 = mysqli_query($connection, $query);
+        
     }
 
     $query = "SELECT * FROM TeamsPlaying";
@@ -566,6 +567,8 @@
         $query = "INSERT INTO TeamsPlaying(host_id, guest_id, match_id) VALUES(1, 2, 1)";
         $res1 = mysqli_query($connection, $query);
         $query = "INSERT INTO TeamsPlaying(host_id, guest_id, match_id) VALUES(3, 4, 2)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO TeamsPlaying(host_id, guest_id, match_id) VALUES(5, 1, 3)";
         $res1 = mysqli_query($connection, $query);
     }
 
@@ -625,4 +628,5 @@
         $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(4, 2, 'Place Bet')";
         $res1 = mysqli_query($connection, $query);
     }
+    
 ?>

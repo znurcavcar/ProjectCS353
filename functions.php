@@ -170,9 +170,9 @@ function createWallet($tc_no, $connection){
 }
 
 function changeOdd($type, $mid, $odd, $connection){
-	$query = "update Bet set ' . $odd . ' 
-				where bet_type = ' . $type . ' 
-				and match_id = ' . $mid . '";
+	$query = "update Bet set '". $odd . "' 
+				where bet_type = '". $type . "' 
+				and match_id = '". $mid . "'";
 	$res = mysqli_query($connection, $query);
 	if(!$res){
 		echo "Failed to change the odd";
@@ -181,8 +181,8 @@ function changeOdd($type, $mid, $odd, $connection){
 }
 
 function cancelBet($type, $mid, $uid, $date, $connection){
-	$query = "insert into BetRemovedByAdmin values(' . $uid . ',
-				' . $mid . ', ' . $date . ', ' . $date . ')";
+	$query = "insert into BetRemovedByAdmin values('". $uid . "',
+				'". $mid ."', '". $date . "', '". $date ."')";
 	$res = mysqli_query($connection, $query);
 	if(!$res){
 		echo "Failed to cancel the bet";

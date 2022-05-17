@@ -87,9 +87,6 @@ https://templatemo.com/tm-541-host-cloud
                 <a class="nav-link" href="matchlist.php">Matches</a>
               </li>
               <?php
-              session_start();
-              include "config.php";
-              include "functions.php";
               $con = $connection;
               if(isBettor($_SESSION['TC_id'],$con)){
                 echo("<li class='nav-item'><a class='nav-link' href='wallet.php'>My Wallet</a></li>");
