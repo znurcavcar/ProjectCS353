@@ -9,7 +9,7 @@
     <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 
-    <title>Host Cloud Template - Services</title>
+    <title>Betman - Available Betslips</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -60,7 +60,7 @@ https://templatemo.com/tm-541-host-cloud
               <li class="nav-item">
                 <a class="nav-link" href="wallet.php">My Wallet</a>
               </li>
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="matchlist.php">Matches</a>
               </li>
             </ul>
@@ -97,31 +97,66 @@ https://templatemo.com/tm-541-host-cloud
             </div>
           </div>
           <?php
-          session_start();
+            session_start();
             include "config.php";
             $con = $connection;
 
-            $query = "SELECT match_id, match_type, match_date FROM Game";
+            $uid = $_SESSION['TC_id'];
+
+            $query = "SELECT * FROM Betslip";
             $complist = mysqli_query($connection, $query);
 
-            // find the teams of the match
+            // find the bets on the betslips
             while($tuple = mysqli_fetch_array($complist)) {
-                $tmp = $tuple['match_id'];
-                $query2 = "SELECT Host.team_name AS host, Guest.team_name AS guest 
-                            FROM TeamsPlaying, Team AS Host, Team AS Guest
-                            WHERE match_id = '" .$tmp ."' AND host_id = Host.team_id AND guest_id = Guest.team_id";
-                $teams = mysqli_query($connection, $query2);
-                $teamtuple = mysqli_fetch_array($teams);
+                $tmp = $tuple['slip_id'];
+                $query2 = "SELECT * 
+                          FROM SlipHasBet
+                          WHERE slip_id = '" .$tmp."' ";
+                $bets = mysqli_query($connection, $query2);
+                echo("<div class='col-md-4 col-sm-6 col-xs-12'><div class='service-item'>");
+                echo("<h4>Betslip ID: ".$tuple['slip_id']."<br>Number of Bets: ".$tuple['no_of_bets']."<br>Rate: ".$tuple['rate']."</h4>");
+                while($bettuple = mysqli_fetch_array($bets)){
+                  // find the bets on the betslip
+                  $tmpid = $bettuple['match_id'];
+                  $tmptype = $bettuple['bet_type'];
+                  $query3 = "SELECT * 
+                          FROM Bet
+                          WHERE match_id = '" .$tmpid."' AND bet_type = '" .$tmptype."' ";
+                  $betinfo = mysqli_query($connection, $query3);
+                  $betinfo = mysqli_fetch_array($betinfo);
 
-                echo("<div class='col-md-4 col-sm-6 col-xs-12'>
-                        <div class='service-item'>");
-                echo("<h4>".$teamtuple['host']." - ".$teamtuple['guest']."</h4>");
-                echo("<p>".$tuple['match_type']."</p>");
-                echo("<p>".$tuple['match_date']."</p>");
-                $_SESSION['match'] = $tuple['match_id'];
-                
-                echo("<form action='matchdetails.php' method='post'><input type='submit' name='match' value='".$tuple['match_id']."' style='background-color:#00bcd4; border-color:#00bcd4;color: #00bcd4'></form>");
+                  // find the teams on the bet
+                  $query4 = "SELECT * 
+                          FROM TeamsPlaying
+                          WHERE match_id = '" .$tmpid."' ";
+                  $gameinfo = mysqli_query($connection, $query4);
+                  $gameinfo = mysqli_fetch_array($gameinfo);
 
+                  // find the guest&host info
+                  $host_id = $gameinfo['host_id'];
+                  $query5 = "SELECT * 
+                          FROM Team
+                          WHERE team_id = '" .$host_id."' ";
+                  $hostinfo = mysqli_query($connection, $query5);
+                  $hostinfo = mysqli_fetch_array($hostinfo);
+                  $guest_id = $gameinfo['guest_id'];
+                  $query6 = "SELECT * 
+                          FROM Team
+                          WHERE team_id = '" .$guest_id."' ";
+                  $guestinfo = mysqli_query($connection, $query6);
+                  $guestinfo = mysqli_fetch_array($guestinfo);
+                  echo(" Host - Guest: ".$hostinfo['team_name']." - ".$guestinfo['team_name']." <br> Bet Type: ".$betinfo['bet_type']." <br> Bet Name: ".$betinfo['bet_name']." <br> MBN: ".$betinfo['MBN']." <br> Odds: ".$betinfo['odds']."<br><br></h4>");  
+                }
+                // Add to my betslips IF NOT ALREADY ADDED
+                $query6 = "SELECT * 
+                          FROM BettorOwnsSlip
+                          WHERE bettor_id = '" .$_SESSION['TC_id']."' AND slip_id='".$tuple['slip_id']."'";
+                $res = mysqli_query($connection, $query6);
+                if(mysqli_num_rows($res) == 0){
+                  echo("<form action='addtobetslip.php' method='post'><button type='submit' name='slip' value='".$tuple['slip_id']."' style='background-color:#00bcd4; border-color:#00bcd4'>Bet on this Slip</button></form>");
+                }
+                else
+                  echo("<h5>Slip already owned!</h5>");
                 echo("</div></div>");
             }
           ?>

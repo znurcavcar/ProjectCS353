@@ -1,3 +1,31 @@
+<?php
+session_start();
+
+include("config.php");
+include("functions.php");
+
+    if(!checkLog()){
+	    header("Location: SignIn.php");
+	    die;
+    }
+
+    $user_data['username'] = $_SESSION['username'];
+    $user_data['TC_id'] = $_SESSION['TC_id'];
+    $user_data['email'] = $_SESSION['email'];
+    $user_data['phone'] = $_SESSION['phone'];
+    $user_data['date_of_birth'] = $_SESSION['date_of_birth'];
+
+    if(!isEditor($user_data['TC_id'], $connection)){
+        header("Location: Wallet.php");
+        die;
+    }
+	
+	if(isset($_POST['create'])){
+		header("Location: Wallet.php");
+		die;
+	}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +37,7 @@
     <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 
-    <title>Betman - Available Betslips</title>
+    <title>Betman - Create Bet Slip</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,7 +57,7 @@ https://templatemo.com/tm-541-host-cloud
 
   <body>
 
-    <!-- ***** Preloader Start ***** -->
+    <!-- ** Preloader Start ** -->
     <div id="preloader">
         <div class="jumper">
             <div></div>
@@ -37,7 +65,7 @@ https://templatemo.com/tm-541-host-cloud
             <div></div>
         </div>
     </div>  
-    <!-- ***** Preloader End ***** -->
+    <!-- ** Preloader End ** -->
 
     <!-- Header -->
     <header class="">
@@ -58,16 +86,13 @@ https://templatemo.com/tm-541-host-cloud
                 <a class="nav-link" href="betslips.php">My Betslips</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="wallet.php">My Wallet</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link" href="matchlist.php">Matches</a>
               </li>
             </ul>
           </div>
           <div class="functional-buttons">
             <ul>
-              <li><a href="#">Sign Out</a></li>
+              <li><a href="Welcome.php">Sign Out</a></li>
             </ul>
           </div>
         </div>
@@ -80,88 +105,64 @@ https://templatemo.com/tm-541-host-cloud
       <div class="container">
         <div class="row">
           <div class="col-md-12">
+            <h1>Create Bet Slip</h1>
+            <p><span>Share Your Predictions with Your Followers</span></p>
           </div>
         </div>
       </div>
     </div>
     <!-- Heading Ends Here -->
 
-
-    <!-- Betslips Starts Here -->
-    <div class="services-section services-page">
+    <!-- Contact Us Starts Here -->
+    <div class="contact-us">
       <div class="container">
         <div class="row">
-          <div class="col-md-12">
-            <div class="section-heading">
-              <h2>My Betslips</h2>
+          <div class="col-md-6">
+              <form id="contact" action="" method="post">
+                <div class="row">
+                  <?php
+                  include "config.php";
+                  $con = $connection;
+                  $query = "SELECT * FROM Bet";
+                  $list = mysqli_query($con, $query);
+                  echo("<div class='col-lg-12'><h3>Available Betss\n</h3></div>");
+                  echo("<div>");
+                  while($tuple = mysqli_fetch_array($list)){
+                    $mid = $tuple['match_id']."-".$tuple['bet_type'];
+                    echo("<input type='checkbox' name='formMatch[]' value='".$mid."' checked/>".$tuple['match_id']." - ".$tuple['bet_type']."<br />");
+                  }
+                  echo("</div>");
+                  ?>
+                  <div class="col-lg-12">
+                    <fieldset>
+                      <button type="submit" id="form-submit" class="main-button">Send Message</button>
+                    </fieldset>
+                  </div>
+                </div>
+              </form>
+          
+          </div>
+          <div class="col-md-6">
+            <div class="right-content">
+              <div class="section-heading">
+                <span>Create Bet Slip</span>
+                <h2>Your Predictions</h2>
+                <p>Use your predictions while creating this bet slip in order to share your predictions with your followers. Your foresight might help others!</p>
+              </div>
             </div>
           </div>
-          <?php
-            session_start();
-            include "config.php";
-            $con = $connection;
-
-            $uid = $_SESSION['TC_id'];
-
-            $query = "SELECT * FROM Betslip NATURAL JOIN BettorOwnsSlip WHERE bettor_id = '".$uid."'";
-            $complist = mysqli_query($connection, $query);
-
-            // find the bets on the betslips
-            while($tuple = mysqli_fetch_array($complist)) {
-                $tmp = $tuple['slip_id'];
-                $query2 = "SELECT * 
-                          FROM SlipHasBet
-                          WHERE slip_id = '" .$tmp."' ";
-                $bets = mysqli_query($connection, $query2);
-                echo("<div class='col-md-4 col-sm-6 col-xs-12'><div class='service-item'>");
-                echo("<h4>Betslip ID: ".$tuple['slip_id']."<br>Number of Bets: ".$tuple['no_of_bets']."<br>Rate: ".$tuple['rate']."</h4>");
-                while($bettuple = mysqli_fetch_array($bets)){
-                  // find the bets on the betslip
-                  $tmpid = $bettuple['match_id'];
-                  $tmptype = $bettuple['bet_type'];
-                  $query3 = "SELECT * 
-                          FROM Bet
-                          WHERE match_id = '" .$tmpid."' AND bet_type = '" .$tmptype."' ";
-                  $betinfo = mysqli_query($connection, $query3);
-                  $betinfo = mysqli_fetch_array($betinfo);
-
-                  // find the teams on the bet
-                  $query4 = "SELECT * 
-                          FROM TeamsPlaying
-                          WHERE match_id = '" .$tmpid."' ";
-                  $gameinfo = mysqli_query($connection, $query4);
-                  $gameinfo = mysqli_fetch_array($gameinfo);
-
-                  // find the guest&host info
-                  $host_id = $gameinfo['host_id'];
-                  $query5 = "SELECT * 
-                          FROM Team
-                          WHERE team_id = '" .$host_id."' ";
-                  $hostinfo = mysqli_query($connection, $query5);
-                  $hostinfo = mysqli_fetch_array($hostinfo);
-                  $guest_id = $gameinfo['guest_id'];
-                  $query6 = "SELECT * 
-                          FROM Team
-                          WHERE team_id = '" .$guest_id."' ";
-                  $guestinfo = mysqli_query($connection, $query6);
-                  $guestinfo = mysqli_fetch_array($guestinfo);
-                  echo(" Host - Guest: ".$hostinfo['team_name']." - ".$guestinfo['team_name']." <br> Bet Type: ".$betinfo['bet_type']." <br> Bet Name: ".$betinfo['bet_name']." <br> MBN: ".$betinfo['MBN']." <br> Odds: ".$betinfo['odds']."<br><br></h4>");
-
-                  
-                }
-                echo("</div></div>");
-            }
-          ?>
         </div>
       </div>
     </div>
-    <!-- Matches Ends Here --> 
+    <!-- Contact Us Ends Here -->
 
     <!-- Footer Starts Here -->
+    <br>
+    <br>
+    <br>
     <footer>
       <div class="container">
         <div class="row">
-          
           <div class="col-md-12">
             <div class="sub-footer">
               <p>Copyright &copy; 2020 Cloud Hosting Company
@@ -182,6 +183,7 @@ https://templatemo.com/tm-541-host-cloud
     <script src="assets/js/owl.js"></script>
     <script src="assets/js/accordions.js"></script>
 
+
     <script language = "text/Javascript"> 
       cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
       function clearField(t){                   //declaring the array outside of the
@@ -192,5 +194,6 @@ https://templatemo.com/tm-541-host-cloud
           }
       }
     </script>
+
   </body>
 </html>
