@@ -572,8 +572,57 @@
     $query = "SELECT * FROM Bet";
     $res = mysqli_query($connection, $query);
     if(mysqli_num_rows($res) == 0){
-        $query = "INSERT INTO Bet(match_id, bet_type, bet_name, MBN, odds) VALUES(1, 'A', 'A1', 3, 0.53)";
+        $query = "INSERT INTO Bet(match_id, bet_type, bet_name, MBN, odds) VALUES(1, 'Win Bet', 'A1', 3, 0.53)";
         $res1 = mysqli_query($connection, $query);
-        $query = "INSERT INTO Bet(match_id, bet_type, bet_name, MBN, odds) VALUES(2, 'B', 'B1', 2, 0.37)";
+        $query = "INSERT INTO Bet(match_id, bet_type, bet_name, MBN, odds) VALUES(1, 'Patent Bet', 'B1', 3, 0.59)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Bet(match_id, bet_type, bet_name, MBN, odds) VALUES(2, 'Win Bet', 'A2', 4, 0.71)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Bet(match_id, bet_type, bet_name, MBN, odds) VALUES(2, 'Patent Bet', 'B2', 2, 0.37)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Bet(match_id, bet_type, bet_name, MBN, odds) VALUES(2, 'Place Bet', 'C1', 2, 0.31)";
         $res1 = mysqli_query($connection, $query);
     }
+
+    $query = "SELECT * FROM Betslip";
+    $res = mysqli_query($connection, $query);
+    if(mysqli_num_rows($res) == 0){
+        $query = "INSERT INTO Betslip(slip_id, no_of_bets, rate) VALUES(1, 2, 2)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Betslip(slip_id, no_of_bets, rate) VALUES(2, 3, 2)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Betslip(slip_id, no_of_bets, rate) VALUES(3, 2, 3)";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO Betslip(slip_id, no_of_bets, rate) VALUES(4, 5, 3)";
+        $res1 = mysqli_query($connection, $query);
+    }
+
+    $query = "SELECT * FROM SlipHasBet";
+    $res = mysqli_query($connection, $query);
+    if(mysqli_num_rows($res) == 0){
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(1, 1, 'Win Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(1, 2, 'Patent Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(2, 1, 'Win Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(2, 1, 'Patent Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(2, 2, 'Place Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(3, 1, 'Patent Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(3, 2, 'Win Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(4, 1, 'Win Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(4, 1, 'Patent Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(4, 2, 'Win Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(4, 2, 'Patent Bet')";
+        $res1 = mysqli_query($connection, $query);
+        $query = "INSERT INTO SlipHasBet(slip_id, match_id, bet_type) VALUES(4, 2, 'Place Bet')";
+        $res1 = mysqli_query($connection, $query);
+    }
+?>
